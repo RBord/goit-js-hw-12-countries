@@ -1,0 +1,46 @@
+* {box-sizing: border-box;}
+
+body{margin: 0;}
+
+div {padding: 30px 0}
+
+form {
+  position: relative;
+  width: 300px;
+  margin: 0 auto;
+}
+.d2 {background: #DABB52;}
+
+.d2 input {
+  border: none;
+  outline: none;
+  border-radius: 3px;
+}
+
+.d2 input {
+  width: 100%;
+  height: 42px;
+  background: #F9F0DA;
+  padding-left: 15px;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.card {
+  width: 288px;
+  /* display: flex; */
+}
+
+.card-text {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.card-img-top {
+  display: flex;
+  justify-content: center;
+}
