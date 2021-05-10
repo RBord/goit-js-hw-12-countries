@@ -1,6 +1,6 @@
 import './styles.css';
 import countryCardTpl from './templates/country-card.hbs';
-const debounce = require('lodash.debounce');
+// const debounce = require('lodash.debounce');
 const refs = {
     cardContainer: document.querySelector('.js-card-container'),
     inputEl: document.querySelector('input')
@@ -12,7 +12,7 @@ refs.inputEl.addEventListener('input', onSearch)
 function onSearch(e){
     const value = e.currentTarget.value;
     console.log(value)
-
+    
 
     fetchCountryByName(value)
         .then(renderCountryCard)
