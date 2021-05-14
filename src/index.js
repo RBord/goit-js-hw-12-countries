@@ -1,29 +1,23 @@
 import './styles.css';
 import countryCardTpl from './templates/country-card.hbs';
-// const debounce = require('lodash.debounce');
+// import debounce = from '.lodash.debounce';
+import CountriesApiService from './fetchCountries';
+
 const refs = {
     cardContainer: document.querySelector('.js-card-container'),
     inputEl: document.querySelector('input')
-
 }
+const countriesApiService = new CountriesApiService();
 
 refs.inputEl.addEventListener('input', onSearch)
 
 function onSearch(e){
-    const value = e.currentTarget.value;
-    console.log(value)
+    countriesApiService.query = e.currentTarget.value;
     
 
-    fetchCountryByName(value)
-        .then(renderCountryCard)
-        .catch(error => console.log(error));
-}
-
-function fetchCountryByName(countryName){
-    return fetch(`https://restcountries.eu/rest/v2/name/${countryName}`)
-    .then(response => {
-        return response.json();
-    });
+   countriesApiService.fetchCountries()
+    .then(renderCountryCard)
+    .catch(error => console.log(error));
 }
 
 function renderCountryCard(country){
