@@ -25,6 +25,7 @@ form {
 }
 
 img {
+  outline: solid;
   display: block;
   max-width: 100%;
   height: auto;
@@ -32,7 +33,7 @@ img {
 
 .card {
   width: 288px;
-  /* display: flex; */
+  margin: auto;
 }
 
 .card-text {
