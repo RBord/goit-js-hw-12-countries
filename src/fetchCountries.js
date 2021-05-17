@@ -7,24 +7,10 @@ export default class CountriesApiService {
         this.searchQuery = '';
     }
 
-    fetchOneCountry(){
+    fetchCountry(){
         return axios
             .get(`/${this.searchQuery}`)
             .then(response => response.data)
-    }
-
-    fetchArrayLength(){
-        return axios
-            .get(`/${this.searchQuery}`)
-            .then(response => response.data.length)
-    }
-
-    fetchFewCountries(){
-        return axios
-            .get(`/${this.searchQuery}`)
-            .then(response => {
-                return response.data.map((array) => `<li>${array.name}</li>`)
-            })
     }
 
     get query(){

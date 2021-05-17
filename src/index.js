@@ -1,6 +1,6 @@
 import './styles.css';
 import countryCardTpl from './templates/country-card.hbs';
-// import debounce from 'lodash.debounce'
+import {debounce as _debounce} from 'lodash';
 import CountriesApiService from './fetchCountries';
 
 import { alert, defaultModules} from '@pnotify/core';
@@ -9,7 +9,7 @@ import * as PNotifyMobile from '@pnotify/mobile';
 import '@pnotify/mobile/dist/PNotifyMobile.css';
 
 defaultModules.set(PNotifyMobile, {});
-
+// const debounced =;
 const refs = {
     cardContainer: document.querySelector('.js-card-container'),
     inputEl: document.querySelector('input'),
@@ -17,31 +17,26 @@ const refs = {
 }
 const countriesApiService = new CountriesApiService();
 
-refs.formEl.addEventListener('input', onSearch)
+refs.formEl.addEventListener('input', onSearch);
 
-function onSearch(e){
-    countriesApiService.query = e.currentTarget.elements.query.value;
-
-    countriesApiService.fetchArrayLength()
+function onSearch(evt){
+    countriesApiService.query = evt.currentTarget.elements.query.value;
+    countriesApiService.fetchCountry()
         .then(response => {
             refs.cardContainer.innerHTML = '';
-            
-            if(response === 1){
-                return countriesApiService.fetchOneCountry()
+
+            if(response.length === 1){
+                return countriesApiService.fetchCountry()
                     .then(renderCountryCard)
                     .catch(error => console.log(error));
-            } 
-            
-            else if (response < 10){
-                return countriesApiService.fetchFewCountries()
-                    .then(response => {
-                        refs.cardContainer.innerHTML =  response.join('');
-                    })
-                    .catch(error => console.log(error));
+            } else if(response.length < 10){
+                const liEl = response.map((array) => `<li>${array.name} </li>`)
+                return refs.cardContainer.innerHTML = liEl.join('');
             }
 
-            alertNotification();
+            throw new Error(alertNotification());
         })
+        .catch(error => console.log(error))
 }
 
 function renderCountryCard(country){
