@@ -1,15 +1,15 @@
 import './styles.css';
 import countryCardTpl from './templates/country-card.hbs';
-import {debounce as _debounce} from 'lodash';
+var debounce = require('lodash.debounce');
 import CountriesApiService from './fetchCountries';
 
-import { alert, defaultModules} from '@pnotify/core';
 import '@pnotify/core/dist/PNotify.css';
-import * as PNotifyMobile from '@pnotify/mobile';
 import '@pnotify/mobile/dist/PNotifyMobile.css';
+import '@pnotify/core/dist/BrightTheme.css';
 
-defaultModules.set(PNotifyMobile, {});
-// const debounced =;
+import * as PNotify from '@pnotify/core/dist/PNotify.js';
+
+
 const refs = {
     cardContainer: document.querySelector('.js-card-container'),
     inputEl: document.querySelector('input'),
@@ -17,10 +17,10 @@ const refs = {
 }
 const countriesApiService = new CountriesApiService();
 
-refs.formEl.addEventListener('input', onSearch);
+refs.inputEl.addEventListener('input', debounce(onSearch, 500));
 
-function onSearch(evt){
-    countriesApiService.query = evt.currentTarget.elements.query.value;
+function onSearch(e){
+    countriesApiService.query = e.target.value;
     countriesApiService.fetchCountry()
         .then(response => {
             refs.cardContainer.innerHTML = '';
@@ -45,7 +45,11 @@ function renderCountryCard(country){
 }
 
 function alertNotification(){
-    return alert({
-        text: 'Упс, больше 10ти стран!!!Введите корректный запрос'
-    });
+    const optionsNotification = {
+        type: 'error',
+        text: 'Упс, больше 10ти стран!!!Введите корректный запрос',
+        remove: true,
+    };
+
+    return PNotify.error(optionsNotification);
 }
