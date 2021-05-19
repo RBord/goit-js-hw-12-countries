@@ -21,9 +21,11 @@ refs.inputEl.addEventListener('input', debounce(onSearch, 500));
 
 function onSearch(e){
     countriesApiService.query = e.target.value.trim();
-    
 
-    countriesApiService.fetchCountry()
+    if(countriesApiService.query === ""){
+        noticeNotification();
+    } else {
+        countriesApiService.fetchCountry()
         .then(response => {
             refs.cardContainer.innerHTML = '';
 
@@ -34,28 +36,44 @@ function onSearch(e){
             } else if(response.length < 10){
                 const liEl = response.map((array) => `<li>${array.name} </li>`)
                 return refs.cardContainer.innerHTML = liEl.join('');
+            } else {
+                alertNotification();
             }
         })
         .catch(error => {
-            console.log(`Упс, сделайте более корректный запрос. Ошибка ${error.response.status}`);
-            alertNotification();
+            console.log(`Упс, сделайте более корректный запрос. Ошибка ${error.response.status}`)
         })
+    }
+    
 }
 
+    
 function renderCountryCard(country){
     const markup = countryCardTpl(country);
     refs.cardContainer.innerHTML = markup;
 }
 
-function alertNotification(){
+function noticeNotification(){
     const optionsNotification = {
-        type: 'error',
+        type: 'notice',
         title: 'Введите название страны',
         text: 'Сделайте корректный запрос!',
         delay: 1500,
         remove: true,
     };
 
-    return PNotify.error(optionsNotification);
+    return PNotify.notice(optionsNotification);
 }
 
+function alertNotification(){
+    const optionsNotification = {
+        type: 'error',
+        title: 'Укажите более четкий запрос!',
+        text: 'Выдает более 10ти стран!',
+        delay: 1500,
+        remove: true,
+    };
+
+    return PNotify.error(optionsNotification);
+
+}
